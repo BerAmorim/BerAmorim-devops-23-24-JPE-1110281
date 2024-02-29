@@ -15,11 +15,14 @@
  */
 package com.greglturnquist.payroll;
 
+
+
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Greg Turnquist
@@ -32,13 +35,17 @@ public class Employee {
 	private String firstName;
 	private String lastName;
 	private String description;
+	@NotNull
+	private Integer jobYears;
 
-	private Employee() {}
-
-	public Employee(String firstName, String lastName, String description) {
+	public Employee(String firstName, String lastName, String description, Integer jobYears) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
+		this.jobYears = jobYears;
+	}
+
+	public Employee() {
 	}
 
 	@Override
@@ -89,6 +96,13 @@ public class Employee {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public Integer getJobYears() {
+		return jobYears;
+	}
+
+	public void setJobYears(Integer jobYears) {
+		this.jobYears = jobYears;
+	}
 
 	@Override
 	public String toString() {
@@ -97,6 +111,7 @@ public class Employee {
 			", firstName='" + firstName + '\'' +
 			", lastName='" + lastName + '\'' +
 			", description='" + description + '\'' +
+			", jobYears=" + jobYears +
 			'}';
 	}
 }
