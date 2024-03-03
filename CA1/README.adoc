@@ -1,22 +1,116 @@
-:doctype: book
-:tags: [rest,hateoas,data,react,security]
-:projects: [spring-data-rest,spring-data-jpa,spring-hateoas,spring-security,spring-boot,]
-:toc: left
-:icons: font
-:source-highlighter: prettify
-:image-width: 500
+# Technical Report for CA1
 
-= React.js and Spring Data REST
+## Introduction
 
-This tutorial shows a collection of apps that use Spring Data REST and its powerful backend functionality, combined with React's sophisticated features to build an easy-to-understand UI.
+This technical report documents the development process, decisions, and implementation details of the CA1 assignment. The assignment involves enhancing a React.js and Spring Data REST application by introducing new features and applying version control best practices with Git.
 
-* https://www.youtube.com/watch?v=TgCr7v9tdKM[Spring Data REST] provides a fast way to build hypermedia-powered repositories.
-* https://facebook.github.io/react/index.html[React] is Facebook's solution to efficient, fast, and easy-to-use views in JavaScript.
+## Git Repository Initialization and Setup
 
-include::basic/README.adoc[leveloffset=+1]
-include::hypermedia/README.adoc[leveloffset=+1]
-include::conditional/README.adoc[leveloffset=+1]
-include::events/README.adoc[leveloffset=+1]
-include::security/README.adoc[leveloffset=+1]
+```bash
+echo "# repository-name" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:username/repository-name.git
+git push -u origin main
+```
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
+## Requirements Analysis and Design
+
+### Overview
+
+The assignment entails several key tasks:
+
+1. Copying the code of the Tutorial React.js and Spring Data REST Application into a new folder named CA1.
+2. Committing the changes and pushing them to the repository.
+3. Tagging the initial version as v1.1.0 and pushing the tag to the server.
+4. Developing a new feature to add a "jobYears" field to the Employee entity.
+5. Creating unit tests for the new field and ensuring validation for integer values only.
+6. Debugging the server and client parts of the solution.
+7. Committing the new feature, pushing the changes, and tagging the repository as v1.2.0.
+8. Using the master branch to "publish" the "stable" versions of the Tutorial React.js and Spring Data REST Application.
+9. Developing new features in branches named after the feature. For example, creating a branch named "email-field" to add a new email field to the application.
+10. Creating a branch called fix-invalid-email. The server should only accept Employees with a valid email (e.g., an email must have the "@" sign).
+11. Merging into the master branch and tagging the repository as v1.3.1.
+12. At the end of the assignment, marking the repository with the tag ca1-part2.
+
+### Implementation Steps
+
+#### Setting Up the Project
+
+Clone the existing tutorial project into a new folder CA1 and initialize a new Git repository:
+
+```bash
+    git clone <repository-url> CA1
+    cd CA1
+    git init
+    git add .
+    git commit -m "Initial commit with tutorial project code."
+```
+
+#### Tagging the Initial Version
+
+Create a new tag v1.1.0 and push it to the server:
+
+```bash
+    git tag v1.1.0
+    git push origin v1.1.0
+```
+
+#### Adding a New Field to the Employee Entity
+
+Add a new field "jobYears" to the Employee entity in the backend:
+
+```java
+    @NotNull
+    private Integer jobYears;
+```
+
+#### Finalizing and tagging the New Feature
+
+After implementing features and fixes, commit, push, and tag the repository accordingly:
+
+```bash
+    git add .
+    git commit -m "Add jobYears field to Employee entity."
+    git push origin main
+    git tag v1.2.0
+    git push origin v1.2.0
+```
+
+#### Bug Fixing and Additional Tags
+
+Create a new branch to fix the invalid email issue and merge it into the master branch:
+
+```bash
+    git checkout -b fix-invalid-email
+    # fix the issue
+    git add .
+    git commit -m "Fix invalid email issue."
+    git push origin fix-invalid-email
+    git checkout main
+    git merge fix-invalid-email
+    git push origin main
+    git tag v1.3.1
+    git push origin v1.3.1
+```
+
+#### Final Tagging
+
+At the end of the assignment, mark the repository with the tag ca1-part2:
+
+```bash
+    git tag ca1-part2
+    git push origin ca1-part2
+```
+
+### Tutorial Style Guide
+
+This report is designed in a tutorial style, providing a clear, step-by-step guide that enables replication of the development process and understanding the decision-making involved.
+
+
+
+## Conclusion
+
+This technical report has documented the development process, decisions, and implementation details of the CA1 assignment. The assignment involved enhancing a React.js and Spring Data REST application by introducing new features and applying version control best practices with Git. The report has provided a detailed account of the steps taken to set up the project, add new features, and tag the repository at the end of the assignment. The report has also demonstrated the use of branches to develop new features and fix bugs. The assignment has been completed successfully, and the repository has been tagged as ca1-part2.
