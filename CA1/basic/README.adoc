@@ -32,7 +32,8 @@ The assignment entails several key tasks:
 8. Using the master branch to "publish" the "stable" versions of the Tutorial React.js and Spring Data REST Application.
 9. Developing new features in branches named after the feature. For example, creating a branch named "email-field" to add a new email field to the application.
 10. Creating a branch called fix-invalid-email. The server should only accept Employees with a valid email (e.g., an email must have the "@" sign).
-11. At the end of the assignment, marking the repository with the tag ca1-part2.
+11. Merging into the master branch and tagging the repository as v1.3.1.
+12. At the end of the assignment, marking the repository with the tag ca1-part2.
 
 ### Implementation Steps
 
@@ -80,14 +81,26 @@ After implementing features and fixes, commit, push, and tag the repository acco
 
 #### Bug Fixing and Additional Tags
 
-Create a new branch to fix the invalid email issue and tag the repository at the end of the assignment.
+Create a new branch to fix the invalid email issue and merge it into the master branch:
 
 ```bash
     git checkout -b fix-invalid-email
-    Implement feature and tests
+    # fix the issue
     git add .
     git commit -m "Fix invalid email issue."
     git push origin fix-invalid-email
+    git checkout main
+    git merge fix-invalid-email
+    git push origin main
+    git tag v1.3.1
+    git push origin v1.3.1
+```
+
+#### Final Tagging
+
+At the end of the assignment, mark the repository with the tag ca1-part2:
+
+```bash
     git tag ca1-part2
     git push origin ca1-part2
 ```
