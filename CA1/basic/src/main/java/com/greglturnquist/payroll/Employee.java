@@ -39,7 +39,7 @@ public class Employee {
 	@NotNull
 	private Integer jobYears;
 	@NotNull
-	@Email
+	@Email(message = "Email should be valid")
 	private String email;
 
 	public Employee(String firstName, String lastName, String description, Integer jobYears, String email) {
