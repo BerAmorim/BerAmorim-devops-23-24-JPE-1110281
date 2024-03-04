@@ -146,6 +146,6 @@ To achieve the same goals as presented in this assignment using Mercurial, one w
 
 By following these steps, one can manage version control for the CA1 assignment using Mercurial, offering an alternative to Git that may suit different project needs or personal preferences.
 
-##Conclusion
+## Conclusion
 
 Successfully completing the CA1 assignment demonstrated the effective use of Git to enhance a React.js and Spring Data REST application through the introduction of new features and the application of version control best practices. The exploration of Mercurial as an alternative version control solution provided valuable insights into the different tools available to developers, highlighting the importance of choosing the right tool based on project needs and team dynamics. The process underscored the critical role of version control in managing code changes, ensuring code integrity, and facilitating collaborative development efforts. Through this assignment, the practical application of Git and the theoretical consideration of Mercurial have reinforced the fundamental concepts of version control in software development practices.
