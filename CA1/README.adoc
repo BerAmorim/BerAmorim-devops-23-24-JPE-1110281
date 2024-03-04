@@ -114,3 +114,41 @@ This report is designed in a tutorial style, providing a clear, step-by-step gui
 ## Conclusion
 
 This technical report has documented the development process, decisions, and implementation details of the CA1 assignment. The assignment involved enhancing a React.js and Spring Data REST application by introducing new features and applying version control best practices with Git. The report has provided a detailed account of the steps taken to set up the project, add new features, and tag the repository at the end of the assignment. The report has also demonstrated the use of branches to develop new features and fix bugs. The assignment has been completed successfully, and the repository has been tagged as ca1-part2.
+
+## Analysis of an Alternative Version Control Solution: Mercurial
+
+Mercurial, like Git, is a distributed version control system (DVCS) that enables developers to track and manage changes to their codebase. However, there are key differences and similarities between the two, influencing their usage based on project needs and team preferences.
+
+### Comparison to Git
+
+1. **Ease of Use**: Mercurial is often praised for its simplicity and straightforward command set. New users might find Mercurial to be more approachable than Git, which has a steeper learning curve due to its more extensive set of features and commands.
+
+2. **Branching and Merging**: Both Git and Mercurial support branching and merging, but Git's model allows for more flexibility. Git branches are lightweight and can be created, merged, and deleted with ease, which encourages experimenting with new features. Mercurial uses a slightly different approach, where branches are permanent and clones are often used for feature development.
+
+3. **Performance**: Git generally offers better performance for large projects due to its efficient handling of branches and its compressed data format. However, Mercurial provides sufficient performance for most projects and can be simpler to use for basic operations.
+
+4. **Tooling and Integration**: Git has a broader adoption, which means more tools and integrations are available, including popular platforms like GitHub, GitLab, and Bitbucket. Mercurial is supported by many tools as well, but the ecosystem is smaller.
+
+### Applying Mercurial to the Assignment Goals
+
+To achieve the same goals as presented in this assignment using Mercurial, one would follow a similar workflow with some differences in commands and concepts:
+
+1. **Repository Initialization**: To initialize a Mercurial repository, use `hg init` instead of `git init`.
+
+    ```bash
+    hg init
+    echo "# repository-name" >> README.md
+    hg add README.md
+    hg commit -m "first commit"
+    ```
+
+2. **Pushing Changes**: Mercurial uses `hg push` to send changes to a remote repository, similar to `git push`.
+
+3. **Tagging Versions**: In Mercurial, tags are created with `hg tag <tagname>` and pushed with `hg push --tags`.
+
+4. **Branching for Features and Fixes**: To create a new branch in Mercurial, use `hg branch <branchname>`. Feature development and bug fixes would follow a similar branching model to Git, with the merge process using `hg merge` and commit changes with `hg commit`.
+
+5. **Finalizing with Tags**: Mark the end of the assignment with `hg tag ca1-part2` and push the tag as shown above.
+
+By following these steps, one can manage version control for the CA1 assignment using Mercurial, offering an alternative to Git that may suit different project needs or personal preferences.
+
