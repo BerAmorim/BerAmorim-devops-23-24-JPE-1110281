@@ -109,12 +109,6 @@ At the end of the assignment, mark the repository with the tag ca1-part2:
 
 This report is designed in a tutorial style, providing a clear, step-by-step guide that enables replication of the development process and understanding the decision-making involved.
 
-
-
-## Conclusion
-
-This technical report has documented the development process, decisions, and implementation details of the CA1 assignment. The assignment involved enhancing a React.js and Spring Data REST application by introducing new features and applying version control best practices with Git. The report has provided a detailed account of the steps taken to set up the project, add new features, and tag the repository at the end of the assignment. The report has also demonstrated the use of branches to develop new features and fix bugs. The assignment has been completed successfully, and the repository has been tagged as ca1-part2.
-
 ## Analysis of an Alternative Version Control Solution: Mercurial
 
 Mercurial, like Git, is a distributed version control system (DVCS) that enables developers to track and manage changes to their codebase. However, there are key differences and similarities between the two, influencing their usage based on project needs and team preferences.
@@ -152,3 +146,6 @@ To achieve the same goals as presented in this assignment using Mercurial, one w
 
 By following these steps, one can manage version control for the CA1 assignment using Mercurial, offering an alternative to Git that may suit different project needs or personal preferences.
 
+##Conclusion
+
+Successfully completing the CA1 assignment demonstrated the effective use of Git to enhance a React.js and Spring Data REST application through the introduction of new features and the application of version control best practices. The exploration of Mercurial as an alternative version control solution provided valuable insights into the different tools available to developers, highlighting the importance of choosing the right tool based on project needs and team dynamics. The process underscored the critical role of version control in managing code changes, ensuring code integrity, and facilitating collaborative development efforts. Through this assignment, the practical application of Git and the theoretical consideration of Mercurial have reinforced the fundamental concepts of version control in software development practices.
