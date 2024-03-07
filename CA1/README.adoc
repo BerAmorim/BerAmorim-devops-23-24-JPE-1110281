@@ -105,6 +105,36 @@ At the end of the assignment, mark the repository with the tag ca1-part2:
     git push origin ca1-part2
 ```
 
+## Associating Commits to Issues and Closing Issues via Commit Messages
+
+### Overview
+
+A practical feature of version control systems like Git, especially when integrated with platforms such as GitHub, is the ability to associate commits with issues directly through the commit message. This capability not only allows for better tracking of changes related to specific issues but also supports the automatic closing of issues upon the commit's integration into the mainline branch.
+
+### How to Associate Commits with Issues
+
+To link a commit to an issue in your project management tool (e.g., GitHub), include the issue number in your commit message prefixed with a hash (`#`). For example, if you're addressing issue number 42 in your commit, you could use:
+
+```bash
+git commit -m "Improve login functionality, addresses #42"
+```
+
+This commit message links the commit to issue 42, making it easier to track which changes pertain to which issues.
+
+### How to Close Issues via Commit Messages
+
+To close an issue upon the integration of a commit into the mainline branch, include the issue number in your commit message prefixed with a keyword that indicates the action to take.
+For example, if you're addressing issue number 42 and want to close it upon the commit's integration, you could use:
+
+```bash
+git commit -m "Improve login functionality, closes #42"
+```
+
+This commit message not only links the commit to issue 42 but also closes the issue upon the commit's integration into the mainline branch.
+
+By associating commits with issues and closing issues via commit messages, you can better track changes and ensure that issues are resolved as part of the development process. This practice can help streamline your development workflow and improve the overall quality of your codebase.
+
+
 ### Tutorial Style Guide
 
 This report is designed in a tutorial style, providing a clear, step-by-step guide that enables replication of the development process and understanding the decision-making involved.
