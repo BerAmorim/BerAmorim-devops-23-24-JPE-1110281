@@ -134,6 +134,19 @@ This commit message not only links the commit to issue 42 but also closes the is
 
 By associating commits with issues and closing issues via commit messages, you can better track changes and ensure that issues are resolved as part of the development process. This practice can help streamline your development workflow and improve the overall quality of your codebase.
 
+### Associating Commits with Issues after commit and push done
+
+#### Introduction
+
+In order to link certain commits to specific issues I created, I initiated the association process using the git rebase -i --root command. This allowed me to modify the assignment of some entries from 'pick' to 'reword' in the specific commits I wanted to link to the issues.
+
+#### Process
+
+During the interactive rebase, I identified the commits that needed to be linked to issues and changed their action from 'pick' to 'reword'. This allowed me to edit the commit messages and include references to the corresponding issues.
+
+#### Command Used
+
+After updating the commit messages, I executed the git push origin main --force-with-lease command to push the changes to the remote repository. This command ensures that I can force the update of the remote branch while respecting any changes made by other collaborators.
 
 ### Tutorial Style Guide
 
