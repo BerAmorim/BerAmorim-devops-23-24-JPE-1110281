@@ -77,4 +77,12 @@ task backupSources(type: Copy) {
     from 'src'
     into 'backup'
 }
+task zipSources(type: Zip) {
+    description = 'Archives the source files into a zip file.'
+    group = 'Distribution'
+
+    from 'src' // Define o diretório de origem dos arquivos a serem zipados
+    archiveBaseName.set('source-archive') // Nome base do arquivo (sem a extensão .zip)
+    destinationDirectory.set(file('build/distributions')) // Define o diretório de destino do arquivo zip
+}
 
