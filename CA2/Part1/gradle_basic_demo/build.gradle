@@ -57,3 +57,15 @@ task runClient(type:JavaExec, dependsOn: classes){
 
     args 'localhost', '59001'
 }
+task runServer(type: JavaExec, dependsOn: classes) {
+    group = "DevOps"
+    description = "Launches the chat server"
+
+    classpath = sourceSets.main.runtimeClasspath
+
+    mainClass = 'basic_demo.ChatServerApp'
+
+    // Substitua 59001 pelo número da porta que você quer que o servidor use, se diferente
+    args '59001'
+}
+
