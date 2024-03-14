@@ -74,6 +74,24 @@ git push origin main
 ```
 
 These steps resolved the issue and integrated `gradle_basic_demo` as a normal part of the repository, rather than as a submodule or gitlink. This adjustment ensures that the project structure aligns with the requirements of CA2 Part 1, facilitating straightforward navigation and interaction with the `gradle_basic_demo` within the broader project context.
+## Building the Project
+
+Before running or testing the application, it's essential to build the project to compile the code and prepare it for execution. This is achieved by executing the following command in the project's root directory:
+
+```shell
+./gradlew build
+```
+The `./gradlew build` command triggers the Gradle build process for the project. Here's why it's necessary:
+
+- **Compilation**: Gradle compiles the Java source code found in the `src/main/java` directory and produces the corresponding compiled class files.
+
+- **Packaging**: After compilation, Gradle packages the compiled classes into a JAR (Java ARchive) file. This JAR file contains all the necessary compiled classes and resources needed to run the application.
+
+- **Running Tests**: During the build process, Gradle also executes any unit tests found in the `src/test/java` directory. These tests help ensure the correctness of the application's functionality.
+
+- **Dependencies Management**: Gradle resolves and manages project dependencies specified in the `build.gradle` file. It downloads any required libraries (dependencies) from remote repositories and includes them in the build process.
+
+By running `./gradlew build`, you ensure that the project is correctly compiled, tested, and packaged, providing a reliable and executable artifact for deployment or further testing.
 
 ## Implementing the Requirements
 
