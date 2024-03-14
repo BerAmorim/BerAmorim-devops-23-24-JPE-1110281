@@ -70,4 +70,11 @@ task runServer(type: JavaExec, dependsOn: classes) {
     // Substitua 59001 pelo número da porta que você quer que o servidor use, se diferente
     args '59001'
 }
+task backupSources(type: Copy) {
+    description = 'Copies the source files to a backup directory.'
+    group = 'Backup'
+
+    from 'src'
+    into 'backup'
+}
 
