@@ -53,27 +53,8 @@ task copyJarToDist(type: Copy) {
 	into 'dist'
 }
 
-
-/*node {
-	version = '14.17.0'
-	npmVersion = '6.14.13'
-	download = true
-	workDir = file("${project.buildDir}/nodejs")
-	npmWorkDir = file("${project.buildDir}/npm")
-	nodeModulesDir = file("${project.projectDir}")
-}
-
-task npmInstall(type: NpmTask) {
-	args = ['install']
-}
-
-task npmBuild(type: NpmTask) {
-	args = ['run', 'build'] // 'build' deve ser um script definido no seu package.json
-}*/
-
-
 task cleanWebpack(type: Delete) {
-	delete "$projectDir/src/main/resources/static/built"
+	delete 'src/main/resources/static/built/'
 }
 
 clean.dependsOn cleanWebpack
