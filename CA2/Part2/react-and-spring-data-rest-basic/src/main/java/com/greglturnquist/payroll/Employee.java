@@ -15,42 +15,53 @@
  */
 package com.greglturnquist.payroll;
 
-
-
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 /**
  * @author Greg Turnquist
  */
 // tag::code[]
 @Entity // <1>
-public class Employee {
+class Employee {
 
 	private @Id @GeneratedValue Long id; // <2>
 	private String firstName;
 	private String lastName;
 	private String description;
-	@NotNull
-	private Integer jobYears;
-	@NotNull
-	@Email(message = "Email should be valid")
+	private int jobYears;
+	private String jobTitle;
 	private String email;
 
-	public Employee(String firstName, String lastName, String description, Integer jobYears, String email) {
+	protected Employee() {}
+
+	public Employee(String firstName, String lastName, String description, String jobTitle, int jobYears, String email) {
+		if (!validateArguments(firstName, lastName, description, jobTitle, jobYears, email)) {
+			throw new IllegalArgumentException("Invalid arguments provided");
+		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = description;
+		this.jobTitle = jobTitle;
 		this.jobYears = jobYears;
 		this.email = email;
 	}
 
-	public Employee() {
+	public boolean validateArguments(String firstName, String lastName, String description, String jobTitle, int jobYears, String email) {
+		if (firstName == null || firstName.trim().isEmpty()) return false;
+		if (lastName == null ||  lastName.trim().isEmpty()) return false;
+		if (description == null ||  description.trim().isEmpty()) return false;
+		if (jobTitle == null ||  jobTitle.trim().isEmpty()) return false;
+		if (jobYears < 0) return false;
+		if (email == null || email.trim().isEmpty()) return false;
+
+		String emailValidation = "^[A-Za-z0-9+_.-]+@(.+)$";
+		if (!email.matches(emailValidation)) return false;
+
+		return true;
 	}
 
 	@Override
@@ -59,17 +70,19 @@ public class Employee {
 		if (o == null || getClass() != o.getClass()) return false;
 		Employee employee = (Employee) o;
 		return Objects.equals(id, employee.id) &&
-			Objects.equals(firstName, employee.firstName) &&
-			Objects.equals(lastName, employee.lastName) &&
-			Objects.equals(description, employee.description) &&
-			Objects.equals(jobYears, employee.jobYears) &&
-			Objects.equals(email, employee.email);
+				Objects.equals(firstName, employee.firstName) &&
+				Objects.equals(lastName, employee.lastName) &&
+				Objects.equals(description, employee.description) &&
+				Objects.equals(jobTitle, employee.jobTitle) &&
+				Objects.equals(jobYears, employee.jobYears) &&
+				Objects.equals(email, employee.email);
+
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, firstName, lastName, description, jobYears, email);
+		return Objects.hash(id, firstName, lastName, description, jobTitle, jobYears, email);
 	}
 
 	public Long getId() {
@@ -103,12 +116,21 @@ public class Employee {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Integer getJobYears() {
+
+	public int getJobYears() {
 		return jobYears;
 	}
 
-	public void setJobYears(Integer jobYears) {
+	public void setJobYears(int jobYears) {
 		this.jobYears = jobYears;
+	}
+
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
 	}
 
 	public String getEmail() {
@@ -122,13 +144,14 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee{" +
-			"id=" + id +
-			", firstName='" + firstName + '\'' +
-			", lastName='" + lastName + '\'' +
-			", description='" + description + '\'' +
-			", jobYears=" + jobYears + '\'' +
-			", email='" + email + '\'' +
-			'}';
+				"id=" + id +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", description='" + description + '\'' +
+				", jobTitle='" + jobTitle + '\'' +
+				", jobYears='" + jobYears + '\'' +
+				", email='" + email + '\'' +
+				'}';
 	}
 }
 // end::code[]

@@ -1,104 +1,172 @@
 package com.greglturnquist.payroll;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
-import java.util.Set;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeTest {
 
-    private static Validator validator;
-
-    @BeforeAll
-    static void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-
     @Test
-    void testEmployeeCreation() {
+    void testEmployeeConstructorWithValidArguments() {
         // Arrange
-        Employee employee = new Employee();
-        employee.setFirstName("Frodo");
-
-        //Act
-        employee.setJobYears(5);
-
-        // Assert
-        assertNotNull(employee.getJobYears());
-        assertTrue(employee.getJobYears() instanceof Integer);
-    }
-
-    // tests to validate the email with arrange act assert
-
-
-    @Test
-    void testEmptyEmail() {
-        // Arrange
-        Employee employee = new Employee();
-        employee.setFirstName("Frodo");
-        employee.setJobYears(5);
-        employee.setEmail(" "); // This should fail the @Email validation
+        String firstName = "John";
+        String lastName = "Doe";
+        String description = "Developer";
+        String jobTitle = "Senior Developer";
+        int jobYears = 5;
+        String email = "john.doe@example.com";
 
         // Act
-        Set<ConstraintViolation<Employee>> violations = validator.validate(employee);
+        Employee employee = new Employee(firstName, lastName, description, jobTitle, jobYears, email);
 
         // Assert
-        assertFalse( "Invalid email format should result in a constraint violation.", violations.isEmpty());
-
-        // Optionally, check if the violation is specifically for the email field
-        boolean hasEmailViolation = violations.stream()
-                .anyMatch(violation -> violation.getPropertyPath().toString().equals("email"));
-        assertTrue(hasEmailViolation, "There should be a violation for the email field.");
+        assertEquals(firstName, employee.getFirstName());
+        assertEquals(lastName, employee.getLastName());
+        assertEquals(description, employee.getDescription());
+        assertEquals(jobTitle, employee.getJobTitle());
+        assertEquals(jobYears, employee.getJobYears());
+        assertEquals(email, employee.getEmail());
     }
 
     @Test
-    void testInvalidEmail() {
+    void testEmployeeConstructorWithInvalidArguments() {
         // Arrange
-        Employee employee = new Employee();
-        employee.setFirstName("Frodo");
-        employee.setJobYears(5);
-        employee.setEmail("gfdfgdfg"); // This should fail the @Email validation
+        String invalidFirstName = null; // invalid because it's null
 
-        // Act
-        Set<ConstraintViolation<Employee>> violations = validator.validate(employee);
-
-        // Assert
-        assertFalse( "Invalid email format should result in a constraint violation.", violations.isEmpty());
-
-        // Optionally, check if the violation is specifically for the email field
-        boolean hasEmailViolation = violations.stream()
-                .anyMatch(violation -> violation.getPropertyPath().toString().equals("email"));
-        assertTrue(hasEmailViolation, "There should be a violation for the email field.");
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Employee(invalidFirstName, "Doe", "Developer", "Senior Developer", 5, "john.doe@example.com");
+        });
     }
 
     @Test
-    void testEmailSuccessfully() {
+    void testValidateArgumentsWithInvalidEmail() {
         // Arrange
-        Employee employee = new Employee();
-        employee.setEmail("ber@gmail.com"); // This should pass the @Email validation
-        employee.setFirstName("Frodo");
-        employee.setJobYears(5);
+        Employee employee = new Employee("Jane", "Doe", "Manager", "Project Manager", 10, "jane.doe@example.com");
 
         // Act
-        Set<ConstraintViolation<Employee>> violations = validator.validate(employee);
-
-        // Inspect violations
-        violations.forEach(violation -> System.out.println(violation.getMessage()));
+        boolean isValid = employee.validateArguments("Jane", "Doe", "Manager", "Project Manager", 10, "");
 
         // Assert
-        assertTrue(violations.isEmpty(), "Expected no validation errors");
+        assertFalse(isValid);
     }
 
+    @Test
+    void testEqualsAndHashCode() {
+        // Arrange
+        Employee employee1 = new Employee("John", "Doe", "Developer", "Senior Developer", 5, "john.doe@example.com");
+        Employee employee2 = new Employee("John", "Doe", "Developer", "Senior Developer", 5, "john.doe@example.com");
 
+        // Act & Assert
+        assertEquals(employee1, employee2, "Employee objects with the same field values should be equal");
+        assertEquals(employee1.hashCode(), employee2.hashCode(), "Employee objects with the same field values should have the same hash code");
+    }
+
+    @Test
+    void testSetAndGetMethods() {
+        // Arrange
+        Employee employee = new Employee("John", "Doe", "Developer", "Senior Developer", 5, "john.doe@example.com");
+        String updatedFirstName = "Jane";
+        String updatedLastName = "Smith";
+        String updatedDescription = "Lead Developer";
+        String updatedJobTitle = "Lead Developer";
+        int updatedJobYears = 10;
+        String updatedEmail = "jane.smith@example.com";
+
+        // Act
+        employee.setFirstName(updatedFirstName);
+        employee.setLastName(updatedLastName);
+        employee.setDescription(updatedDescription);
+        employee.setJobTitle(updatedJobTitle);
+        employee.setJobYears(updatedJobYears);
+        employee.setEmail(updatedEmail);
+
+        // Assert
+        assertEquals(updatedFirstName, employee.getFirstName());
+        assertEquals(updatedLastName, employee.getLastName());
+        assertEquals(updatedDescription, employee.getDescription());
+        assertEquals(updatedJobTitle, employee.getJobTitle());
+        assertEquals(updatedJobYears, employee.getJobYears());
+        assertEquals(updatedEmail, employee.getEmail());
+    }
+
+    @Test
+    void testEmployeeId() {
+        // Arrange
+        Employee employee = new Employee("John", "Doe", "Developer", "Senior Developer", 5, "john.doe@example.com");
+        Long id = 1L;
+
+        // Act
+        employee.setId(id);
+
+        // Assert
+        assertEquals(id, employee.getId());
+    }
+
+    @Test
+    void testToString() {
+        // Arrange
+        Employee employee = new Employee("John", "Doe", "Developer", "Senior Developer", 5, "john.doe@example.com");
+
+        // Act
+        String employeeString = employee.toString();
+
+        // Assert
+        String expectedString = "Employee{id=null, firstName='John', lastName='Doe', description='Developer', jobTitle='Senior Developer', jobYears='5', email='john.doe@example.com'}";
+        assertEquals(expectedString, employeeString);
+    }
+
+    @Test
+    void testValidationWithAllValidArguments() {
+        // Arrange
+        String firstName = "John";
+        String lastName = "Doe";
+        String description = "Developer";
+        String jobTitle = "Senior Developer";
+        int jobYears = 5;
+        String email = "john.doe@example.com";
+        Employee employee = new Employee(firstName, lastName, description, jobTitle, jobYears, email);
+
+        // Act
+        boolean isValid = employee.validateArguments(firstName, lastName, description, jobTitle, jobYears, email);
+
+        // Assert
+        assertTrue(isValid);
+    }
+
+    @Test
+    void testValidateArgumentsWithEmptyEmail() {
+        // Arrange
+        Employee employee = new Employee("Jane", "Doe", "Manager", "Project Manager", 10, "jane.doe@example.com");
+
+        // Act
+        boolean isValid = employee.validateArguments("Jane", "Doe", "Manager", "Project Manager", 10, "");
+
+        // Assert
+        assertFalse(isValid);
+    }
+
+    @Test
+    void testValidateArgumentsWithEmailWithoutAtSymbol() {
+        // Arrange
+        Employee employee = new Employee("Jane", "Doe", "Manager", "Project Manager", 10, "jane.doe@example.com");
+
+        // Act
+        boolean isValid = employee.validateArguments("Jane", "Doe", "Manager", "Project Manager", 10, "janedoeexample.com");
+
+        // Assert
+        assertFalse(isValid);
+    }
+
+    @Test
+    void testValidateArgumentsWithEmailWithoutDomain() {
+        // Arrange
+        Employee employee = new Employee("Jane", "Doe", "Manager", "Project Manager", 10, "jane.doe@example.com");
+
+        // Act
+        boolean isValid = employee.validateArguments("Jane", "Doe", "Manager", "Project Manager", 10, "jane.doe@");
+
+        // Assert
+        assertFalse(isValid);
+    }
 }
