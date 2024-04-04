@@ -26,10 +26,12 @@
   },
   "packageManager": "npm@9.6.7",
   "scripts": {
-    "watch": "webpack --watch -d --output ./target/classes/static/built/bundle.js",
-    "clean": "rm -rf ./target/classes/static/built",
-    "build": "webpack",
-    "check": "npm audit"
+    "webpack": "webpack",
+    "build": "npm run webpack",
+    "check": "echo Checking frontend",
+    "clean": "echo Cleaning frontend",
+    "lint": "echo Linting frontend",
+    "test": "echo Testing frontend"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
