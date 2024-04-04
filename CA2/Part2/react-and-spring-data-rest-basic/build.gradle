@@ -36,35 +36,25 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-task copyJar(type: Copy) {
-	dependsOn build
+task copyJarToDist(type: Copy) {
+	// Ensure the 'dist' folder is created if it doesn't exist
+	doFirst {
+		mkdir 'dist'
+	}
 
-	from "$buildDir/libs"
-	into "$projectDir/dist"
+	// Specifies that this task depends on the 'jar' task
+	dependsOn jar
 
-	include '*.jar'
+	// Specifies the source of the JAR file. Adjust the path as necessary.
+	// For example, if you are using the standard 'java' plugin, the JAR is usually generated in 'build/libs'.
+	from jar.archivePath
+
+	// Defines the destination for the copied JAR file
+	into 'dist'
 }
-
-/*node {
-	version = '14.17.0'
-	npmVersion = '6.14.13'
-	download = true
-	workDir = file("${project.buildDir}/nodejs")
-	npmWorkDir = file("${project.buildDir}/npm")
-	nodeModulesDir = file("${project.projectDir}")
-}
-
-task npmInstall(type: NpmTask) {
-	args = ['install']
-}
-
-task npmBuild(type: NpmTask) {
-	args = ['run', 'build'] // 'build' deve ser um script definido no seu package.json
-}*/
-
 
 task cleanWebpack(type: Delete) {
-	delete "$projectDir/src/main/resources/static/built"
+	delete 'src/main/resources/static/built/'
 }
 
 clean.dependsOn cleanWebpack
