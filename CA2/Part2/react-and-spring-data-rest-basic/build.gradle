@@ -4,6 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 	id "org.siouan.frontend-jdk17" version "8.0.0"
 	id 'com.github.node-gradle.node' version '3.1.1'
+	id 'war'
 }
 
 group = 'com.greglturnquist'
@@ -15,9 +16,19 @@ java {
 
 frontend {
 	nodeVersion = "16.20.2"
-	assembleScript = "run build"
-	cleanScript = "run clean"
-	checkScript = "run check"
+
+	System.out.println(String.format("I am running on: %s(%s)", System.getProperty("os.arch"), System.getProperty("os.name")))
+	if (System.getProperty("os.arch").equals("aarch64")) {
+		if (System.getProperty("os.name").equals("Linux")) {
+			nodeDistributionUrlPathPattern = 'vVERSION/node-vVERSION-linux-arm64.TYPE'
+		}
+		if (System.getProperty("os.name").equals("Mac OS X")) {
+			nodeDistributionUrlPathPattern.set("vVERSION/node-vVERSION-darwin-arm64.TYPE")
+		}
+	}
+	assembleScript = "run webpack"
+	//cleanScript = "run clean"
+	//checkScript = "run check"
 }
 
 repositories {
@@ -30,28 +41,26 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
+
+
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
 task copyJarToDist(type: Copy) {
-	// Ensure the 'dist' folder is created if it doesn't exist
 	doFirst {
 		mkdir 'dist'
 	}
-
-	// Specifies that this task depends on the 'jar' task
 	dependsOn jar
-
-	// Specifies the source of the JAR file. Adjust the path as necessary.
-	// For example, if you are using the standard 'java' plugin, the JAR is usually generated in 'build/libs'.
-	from jar.archivePath
-
-	// Defines the destination for the copied JAR file
+	from jar.archiveFile  // Updated from archivePath to archiveFile
 	into 'dist'
 }
+
 
 task cleanWebpack(type: Delete) {
 	delete 'src/main/resources/static/built/'

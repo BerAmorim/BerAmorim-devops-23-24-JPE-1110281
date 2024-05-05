@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
@@ -28,7 +29,9 @@ import jakarta.persistence.Id;
 @Entity // <1>
 class Employee {
 
-	private @Id @GeneratedValue Long id; // <2>
+	@Id
+	@GeneratedValue
+	private Long id; // <2>
 	private String firstName;
 	private String lastName;
 	private String description;
