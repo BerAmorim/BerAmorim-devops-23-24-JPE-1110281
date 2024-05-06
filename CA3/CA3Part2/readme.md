@@ -66,12 +66,112 @@ Check the contents of the folder
 ls -l /Users/Bernardo/DEVOPS-1110281/CA3/CA3Part2
 ```
 
+### 5. Check https://bitbucket.org/pssmatos/tut-basic-gradle and replicate the steps so that the spring application uses the H2 server in the db VM
+
+Update build.gradle in CA2/Part2/react-and-spring-data-rest-basic/ folder
+```bash
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+frontend {
+	nodeVersion = "16.20.2"
+	System.out.println(String.format("I am running on: %s(%s)", System.getProperty("os.arch"), System.getProperty("os.name")))
+	if (System.getProperty("os.arch").equals("aarch64")) {
+		if (System.getProperty("os.name").equals("Linux")) {
+			nodeDistributionUrlPathPattern = 'vVERSION/node-vVERSION-linux-arm64.TYPE'
+		}
+		if (System.getProperty("os.name").equals("Mac OS X")) {
+			nodeDistributionUrlPathPattern.set("vVERSION/node-vVERSION-darwin-arm64.TYPE")
+		}
+	}
+	assembleScript = "run webpack"
+	//cleanScript = "run clean"
+	//checkScript = "run check"
+}
+
+task copyJarToDist(type: Copy) {
+	// Ensure the 'dist' folder is created if it doesn't exist
+	doFirst {
+		mkdir 'dist'
+	}
+
+	// Specifies that this task depends on the 'jar' task
+	dependsOn jar
+
+	// Specifies the source of the JAR file. Adjust the path as necessary.
+	// For example, if you are using the standard 'java' plugin, the JAR is usually generated in 'build/libs'.
+	from jar.archivePath
+
+	// Defines the destination for the copied JAR file
+	from jar.archiveFile  // Updated from archivePath to archiveFile
+	into 'dist'
+}
+```
+
+Update gradlew in CA2/Part2/react-and-spring-data-rest-basic/ folder
+```bash
+//from --if "$cygwin" || "$msys" ; then' to
+if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
+``
+
 ### 5. Vagrant Environment Execution
 
 Change to the folder for the Spring Boot application
 ```bash
 cd /Users/Bernardo/DEVOPS-1110281/CA3/CA3Part2
 ```
+
+create a new class called ServletInitializer.java in the CA2/Part2/react-and-spring-data-rest-basic/src/main/java/com/greglturnquist/payroll/ folder
+
+```bash
+package com.greglturnquist.payroll;
+
+
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+public class ServletInitializer extends SpringBootServletInitializer {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ReactAndSpringDataRestApplication.class);
+    }
+}
+```
+
+Update app.js in CA2/Part2/react-and-spring-data-rest-basic/src/main/js/ folder
+
+```bash
+// from 'client({method: 'GET', path: '/basic-0.0.1-SNAPSHOT/api/employees'}).done(response => {´to
+		client({method: 'GET', path: '/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT/api/employees'}).done(response => {
+```
+
+Update application.properties in CA2/Part2/react-and-spring-data-rest-basic/src/main/resources/ folder
+
+```bash
+server.servlet.context-path=/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT
+spring.data.rest.base-path=/api
+#spring.datasource.url=jdbc:h2:mem:jpadb
+# In the following settings the h2 file is created in /home/vagrant folder
+spring.datasource.url=jdbc:h2:tcp://192.168.56.11:9092/./jpadb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+# So that spring will no drop de database on every execution.
+spring.jpa.hibernate.ddl-auto=update
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.h2.console.settings.web-allow-others=true
+```
+
+```bash
 
 Update the Vagrantfile configuration so that it uses your own gradle version of the spring application
 ```bash
@@ -80,13 +180,20 @@ nano Vagrantfile
 
 # Update the following lines in the Vagrantfile
 ```
+      config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get -y update
+    sudo apt-get install -y iputils-ping avahi-daemon libnss-mdns unzip \
+         openjdk-17-jdk-headless
+```
+
+```
       git clone https://github.com/BerAmorim/BerAmorim-devops-23-24-JPE-1110281.git
       cd BerAmorim-devops-23-24-JPE-1110281/CA2/Part2/react-and-spring-data-rest-basic
       chmod u+x gradlew
       ./gradlew clean build
       nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &
       # To deploy the war file to tomcat9 do the following command:
-      # sudo cp ./build/libs/basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps
+       sudo cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.jar /var/lib/tomcat9/webapps
 ```
 
 Run the Vagrant environment
@@ -98,15 +205,21 @@ vagrant up
 
 Access the Spring Boot application in the browser
 ```bash
-localhost:8080
+http://192.168.56.10:8080/basic-0.0.1-SNAPSHOT/
 ```
 
 ### 7. Access the H2 Database
 
 Access the H2 database in the browser
 ```bash
-localhost:8082
+http://192.168.56.10:8080/basic-0.0.1-SNAPSHOT/h2-console
 ```
+
+Connect to the H2 database using the following settings:
+- JDBC URL: `jdbc:h2:tcp://192.168.56.11:9092/./jpadb´
+- User Name: `sa`
+- Password: ``
+
 
 ### 8. Tag the Repository
 
@@ -227,7 +340,7 @@ Vagrant.configure("2") do |config|
       ./gradlew clean build
       nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &
       # To deploy the war file to tomcat9 do the following command:
-      # sudo cp ./build/libs/basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps
+      ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.jar /var/lib/tomcat9/webapps
     SHELL
   end
 end
