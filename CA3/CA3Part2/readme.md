@@ -225,7 +225,12 @@ Connect to the H2 database using the following settings:
 
 Tag the repository with the name `CA3Part2`
 ```bash
-git tag CA3Part2
+git tag ca3-part2
+```
+
+Push the tag to the repository
+```bash
+git push origin ca3-part2
 ```
 
 ### 9. Alternative Hypervisor: VirtualBox
