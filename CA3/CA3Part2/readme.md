@@ -193,7 +193,7 @@ nano Vagrantfile
       ./gradlew clean build
       nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &
       # To deploy the war file to tomcat9 do the following command:
-       sudo cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.jar /var/lib/tomcat9/webapps
+       sudo cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps
 ```
 
 Run the Vagrant environment
@@ -205,20 +205,24 @@ vagrant up
 
 Access the Spring Boot application in the browser
 ```bash
-http://192.168.56.10:8080/basic-0.0.1-SNAPSHOT/
+http://192.168.56.10:8080/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT/
 ```
 
 ### 7. Access the H2 Database
 
 Access the H2 database in the browser
 ```bash
-http://192.168.56.10:8080/basic-0.0.1-SNAPSHOT/h2-console
+http://192.168.56.10:8080/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT/h2-console
 ```
 
 Connect to the H2 database using the following settings:
 - JDBC URL: `jdbc:h2:tcp://192.168.56.11:9092/./jpadb´
 - User Name: `sa`
 - Password: ``
+
+Screenshot of the H2 database connection
+
+![H2 Database Connection](screenshots/databaseWorking.png)
 
 
 ### 8. Tag the Repository
@@ -345,7 +349,7 @@ Vagrant.configure("2") do |config|
       ./gradlew clean build
       nohup ./gradlew bootRun > /home/vagrant/spring-boot-app.log 2>&1 &
       # To deploy the war file to tomcat9 do the following command:
-      ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.jar /var/lib/tomcat9/webapps
+      sudo cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.war /var/lib/tomcat9/webapps
     SHELL
   end
 end
