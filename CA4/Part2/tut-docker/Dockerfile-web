@@ -1,0 +1,14 @@
+# Use OpenJDK 17 image from Docker Hub
+FROM openjdk:17-jdk-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Expose port 8080 for the web server
+EXPOSE 8080
+
+# Copy the built WAR file from your build directory to the container
+COPY ./build/libs/basic-0.0.1-SNAPSHOT.war /app/
+
+# Command to run the WAR file
+CMD ["java", "-jar", "basic-0.0.1-SNAPSHOT.war"]
