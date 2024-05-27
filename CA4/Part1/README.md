@@ -141,6 +141,24 @@ git tag ca4-part1
 git push origin ca4-part1
 ```
 
+#### 7. Execute the chat client in your host computer and connect to the chat server that is running in the container
+
+```sh
+docker run -p 59001:59001 chat-server:latest
+```
+or
+
+```sh
+docker run -p 59001:59001 chat-server:copy
+```
+
+
+```sh
+cd ../CA4/Part1/gradle_basic_demo
+ ./gradlew runClient -PserverIp=192.168.64.3 -PserverPort=59001
+```
+
+
 ## Conclusion
 
 With these steps, we have created Docker images for the chat server by building the application inside the Dockerfile and by building the application on the host and copying the JAR file to the Dockerfile, then publishing the images on Docker Hub.
