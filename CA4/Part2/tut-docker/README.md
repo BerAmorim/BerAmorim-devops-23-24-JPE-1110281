@@ -12,30 +12,33 @@ The `docker-compose.yml` file defines the `db` and `web` services for the H2 dat
 
 ```yaml
 services:
-  db:
-    build:
-      context: .
-      dockerfile: Dockerfile-db
-    container_name: h2-db
-    ports:
-      - "8082:8082"
-      - "9092:9092"
-    volumes:
-      - h2-data:/opt/h2-data
+   db:
+      build:
+         context: .
+         dockerfile: Dockerfile-db
+      container_name: h2-db
+      ports:
+         - "8082:8082"
+         - "9092:9092"
+      volumes:
+         - h2-data:/opt/h2-data
+         - db-backup:/backup
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile-web
-    container_name: spring-web
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
+   web:
+      build:
+         context: .
+         dockerfile: Dockerfile-web
+      container_name: spring-web
+      ports:
+         - "8080:8080"
+      depends_on:
+         - db
 
 volumes:
-  h2-data:
-    driver: local
+   h2-data:
+      driver: local
+   db-backup:
+      driver: local
 ```
 
 ## Dockerfile for the Database (Dockerfile-db)
@@ -113,6 +116,12 @@ CMD ["java", "-jar", "basic-0.0.1-SNAPSHOT.war"]
    docker push your_dockerhub_username/tut-docker-db:latest
    docker push your_dockerhub_username/tut-docker-web:latest
    ```
+   
+## Copy the database file to the volume
+
+```bash
+docker exec h2-db cp /opt/h2-data/database-file /backup/database-file
+```
 
 ## Conclusion
 

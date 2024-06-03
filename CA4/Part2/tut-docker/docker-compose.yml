@@ -9,6 +9,7 @@ services:
       - "9092:9092"
     volumes:
       - h2-data:/opt/h2-data
+      - db-backup:/backup
 
   web:
     build:
@@ -22,4 +23,6 @@ services:
 
 volumes:
   h2-data:
+    driver: local
+  db-backup:
     driver: local
