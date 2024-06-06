@@ -2,7 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'beramorim/ca5_part2-image:${BUILD_NUMBER}'
+        DOCKER_PATH = '/usr/local/bin/docker'
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
+        DOCKER_IMAGE = "beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -49,18 +51,19 @@ pipeline {
             }
         }
         stage('Publish Image') {
-                    steps {
-                        echo 'Building and pushing Docker image...'
-                        dir('CA2/Part2/react-and-spring-rest-data-basic') {
-                            script {
-                                // Building the Docker image with a tag that includes the build number
-                                def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
-                                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                                    // Pushing the image using the tagged image name
-                                    appImage.push()
-                                    echo "Building image with tag: beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
-                                }
+            steps {
+                echo 'Building and pushing Docker image...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    script {
+                        // Verify if Docker Pipeline is available
+                        if (isDockerAvailable()) {
+                            def appImage = docker.build("${env.DOCKER_IMAGE}")
+                            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                                appImage.push()
+                                echo "Built and pushed image with tag: ${env.DOCKER_IMAGE}"
                             }
+                        } else {
+                            error "Docker is not available. Please ensure Docker is installed and the Docker Pipeline plugin is enabled."
                         }
                     }
                 }
