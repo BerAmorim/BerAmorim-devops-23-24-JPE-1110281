@@ -10,13 +10,7 @@ brew install jenkins-lts
 brew services start jenkins-lts
 ```
 
-### 3. Unlock jenkins
-
-```bash
-cat /Users/Bernardo/.jenkins/secrets/initialAdminPassword
-```
-
-### 4. Edit the Jenkins Configuration File
+### 2. Edit the Jenkins Configuration File
 
 1. Navigate to the directory returned by the previous command:
 ```bash
@@ -38,34 +32,40 @@ sudo nano homebrew.mxcl.jenkins-lts.plist
 <string>--httpPort=9090</string>
 ```
 
-### 5. Restart Jenkins
+### 3. Restart Jenkins
 ```bash
 brew services restart jenkins-lts
 ```
 
-### 6. Access Jenkins
+### 4. Unlock jenkins
+
+```bash
+cat /Users/Bernardo/.jenkins/secrets/initialAdminPassword
+```
+
+### 5. Access Jenkins
 1. Open a browser and navigate to `http://localhost:9090`
 
 
-### 7. Creating a Pipeline
+### 6. Creating a Pipeline
 
-#### 7.1. Click on new Item
+#### 6.1. Click on new Item
 
-#### 7.2. Give the item a name and select the Pipeline option:
+#### 6.2. Give the item a name and select the Pipeline option:
 
 ![image1.png](../CA2/Part1/gradle_basic_demo/images/image1.png)
 
-#### 1.3. In the Pipeline section of the setup, link the Pipeline to your git repository:
+#### 6.3. In the Pipeline section of the setup, link the Pipeline to your git repository:
 
-- 1.3.1. Change the Definition to Pipeline Script from SCM;
-- 1.3.2. Change the SCM to git;
-- 1.3.3. Input your own repository;
-- 1.3.4. Save;
+- 6.3.1. Change the Definition to Pipeline Script from SCM;
+- 6.3.2. Change the SCM to git;
+- 6.3.3. Input your own repository;
+- 6.3.4. Save;
 
 ![image2.png](../CA2/Part1/gradle_basic_demo/images/image2.png)
 ![image3.png](../CA2/Part1/gradle_basic_demo/images/image3.png)
 
-### 8. Create the Jenkinsfile
+### 7. Create the Jenkinsfile
 
 ```groovy
 pipeline {
@@ -108,11 +108,11 @@ pipeline {
 }
 ```
 
-#### 8.1. Push the changes to the remote directory!
+#### 7.1. Push the changes to the remote directory!
 
-### 9. Run the Pipeline
+### 8. Run the Pipeline
 
-#### 3.1. Click the Build Now button:
+#### 9. Click the Build Now button:
 
 ![Build_Part1.png](../CA2/Part1/gradle_basic_demo/images/Build_Part1.png)
 ![Build_Part1_2.png](../CA2/Part1/gradle_basic_demo/images/Build_Part1_2.png)
