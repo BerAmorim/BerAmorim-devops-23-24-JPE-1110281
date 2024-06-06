@@ -44,5 +44,15 @@ pipeline {
                 }
             }
         }
+        stage('Publish Image') {
+            steps {
+                echo 'Building and publishing Docker image...'
+                script {
+                    def dockerImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}", ".")
+                    ca5_part2-image.push()
+
+                }
+            }
+        }
     }
 }
