@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_PATH = '/usr/local/bin/docker'
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
+        DOCKER_CONFIG = "$HOME/.docker"  // Define o diretório de configuração do Docker
     }
 
     stages {
@@ -50,9 +51,6 @@ pipeline {
             }
         }
         stage('Publish Image') {
-            environment {
-                DOCKER_CONFIG = "$HOME/.docker"
-            }
             steps {
                 echo 'Building and pushing Docker image...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
@@ -76,7 +74,7 @@ pipeline {
 // Função auxiliar para verificar se o Docker está disponível
 boolean isDockerAvailable() {
     try {
-        sh 'docker --version'
+        sh "${env.DOCKER_PATH} --version"
         return true
     } catch (Exception e) {
         return false
