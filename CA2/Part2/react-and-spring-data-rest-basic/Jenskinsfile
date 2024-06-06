@@ -31,16 +31,9 @@ pipeline {
                 echo 'Generating Javadoc...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
                     sh './gradlew javadoc'
-                    javadoc javadocDir: 'CA2/Part2/build/javadoc', keepAll: false
+                    javadoc javadocDir: 'build/docs/javadoc', keepAll: false
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/docs/javadoc', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                 }
-                publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'CA2/Part2/react-and-spring-data-rest-basic/build/docs/javadoc',
-                    reportFiles: 'index.html',
-                    reportName: 'Javadoc'
-                ])
             }
         }
         stage('Archive') {
