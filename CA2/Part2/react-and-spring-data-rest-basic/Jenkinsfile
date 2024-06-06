@@ -36,7 +36,7 @@ pipeline {
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
                     sh './gradlew javadoc'
                     javadoc javadocDir: 'build/docs/javadoc', keepAll: false
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/docs/javadoc', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/docs/javadoc', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'CA2 Part2', useWrapperFileDirectly: true])
                 }
             }
         }
