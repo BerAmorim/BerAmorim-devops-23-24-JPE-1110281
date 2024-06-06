@@ -2,9 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_PATH = '/usr/local/bin/docker'
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
-        DOCKER_CONFIG = "$HOME/.docker"  // Define o diretório de configuração do Docker
+        DOCKER_IMAGE = 'beramorim/ca5_part2-image:${BUILD_NUMBER}'
     }
 
     stages {
@@ -51,22 +49,18 @@ pipeline {
             }
         }
         stage('Publish Image') {
-            environment {
-                DOCKER_CONFIG = "$HOME/.docker"
-                PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
-            }
-            steps {
-                echo 'Building and pushing Docker image...'
-                dir('CA2/Part2/react-and-spring-data-rest-basic') {
-                    script {
-                        // Verifique se o Docker Pipeline está disponível
-                        if (isDockerAvailable()) {
-                            def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
-                            docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
-                                appImage.push()
+                    steps {
+                        echo 'Building and pushing Docker image...'
+                        dir('CA2/Part2/react-and-spring-rest-data-basic') {
+                            script {
+                                // Building the Docker image with a tag that includes the build number
+                                def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
+                                docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                                    // Pushing the image using the tagged image name
+                                    appImage.push()
+                                    echo "Building image with tag: beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
+                                }
                             }
-                        } else {
-                            error "Docker is not available. Please ensure Docker is installed and the Docker Pipeline plugin is enabled."
                         }
                     }
                 }
@@ -75,7 +69,7 @@ pipeline {
     }
 }
 
-// Função auxiliar para verificar se o Docker está disponível
+// Auxiliary function to check if Docker is available
 boolean isDockerAvailable() {
     try {
         sh "${env.DOCKER_PATH} --version"
