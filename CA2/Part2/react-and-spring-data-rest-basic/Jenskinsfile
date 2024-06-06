@@ -37,7 +37,7 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
-                    reportDir: 'build/docs/javadoc',
+                    reportDir: 'CA2/Part2/react-and-spring-data-rest-basic/build/docs/javadoc',
                     reportFiles: 'index.html',
                     reportName: 'Javadoc'
                 ])
