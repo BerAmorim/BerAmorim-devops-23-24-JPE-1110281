@@ -1,9 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+    agent any
+
+    environment {
+        DOCKER_CREDENTIALS_ID = 'dockerhub'  // O ID das credenciais que você criou no Jenkins
     }
 
     stages {
@@ -53,8 +52,10 @@ pipeline {
             steps {
                 echo 'Building and publishing Docker image...'
                 script {
-                    def dockerImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
-                    dockerImage.push()
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
+                        def dockerImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
+                        dockerImage.push()
+                    }
                 }
             }
         }
