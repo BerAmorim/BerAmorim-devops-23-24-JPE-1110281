@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+
+    environment {
+            DOCKER_IMAGE = 'beramorim/ca5_part2-image:${BUILD_NUMBER}'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out the code from the repository'
+                git branch: 'main', url: 'https://github.com/BerAmorim/BerAmorim-devops-23-24-JPE-1110281.git'
+            }
+        }
+        stage('Assemble') {
+            steps {
+                echo 'Assembling...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew clean assemble'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    sh './gradlew test'
+                    junit 'build/test-results/test/*.xml'
+                }
+            }
+        }
+        stage('Javadoc') {
+            steps {
+                echo 'Generating Javadoc...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    sh './gradlew javadoc'
+                    javadoc javadocDir: 'build/docs/javadoc', keepAll: false
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/docs/javadoc', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                }
+            }
+        }
+        stage('Archive') {
+            steps {
+                echo 'Archiving...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    archiveArtifacts artifacts: 'build/libs/*.war', fingerprint: true
+                }
+            }
+        }
+        stage('Publish Image') {
+                    steps {
+                        echo 'Building and pushing Docker image...'
+                        dir('ca2/part2/react-and-spring-rest-data-basic') {
+                            script {
+                                // Building the Docker image with a tag that includes the build number
+                                def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
+                                docker.withRegistry('https://registry.hub.docker.com', '34bcd4ca-3906-465e-bed3-5cb332d2b91b') {
+                                    // Pushing the image using the tagged image name
+                                    appImage.push()
+                                    echo "Building image with tag: beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
+                                }
+                            }
+                        }
+                    }
+        }
+    }
+}
