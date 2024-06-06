@@ -5,7 +5,7 @@ pipeline {
         DOCKER_PATH = '/usr/local/bin/docker'
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
         DOCKER_IMAGE = "beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
-        DOCKER_CONFIG = "$HOME/.docker"
+        DOCKER_HOST = 'unix:///Users/Bernardo/Library/Containers/com.docker.docker/Data/docker-cli.sock'
     }
 
     stages {
