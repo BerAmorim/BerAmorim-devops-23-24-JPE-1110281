@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 34bcd4ca-3906-465e-bed3-5cb332d2b91b
+        DOCKER_CREDENTIALS_ID = '34bcd4ca-3906-465e-bed3-5cb332d2b91b'
     }
 
     stages {
