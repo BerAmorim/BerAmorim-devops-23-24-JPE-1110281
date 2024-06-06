@@ -40,7 +40,7 @@ pipeline {
             steps {
                 echo 'Archiving...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
-                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: 'build/libs/*.war', fingerprint: true
                 }
             }
         }
