@@ -51,6 +51,10 @@ pipeline {
             }
         }
         stage('Publish Image') {
+            environment {
+                DOCKER_CONFIG = "$HOME/.docker"
+                PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
+            }
             steps {
                 echo 'Building and pushing Docker image...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
