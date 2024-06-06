@@ -51,6 +51,10 @@ pipeline {
             }
         }
         stage('Publish Image') {
+            environment {
+                DOCKER_CONFIG = "$HOME/.docker"
+                PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
+            }
             steps {
                 echo 'Building and pushing Docker image...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
@@ -59,6 +63,7 @@ pipeline {
                         if (isDockerAvailable()) {
                             def appImage = docker.build("${env.DOCKER_IMAGE}")
                             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                                sh "${env.DOCKER_PATH} login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                                 appImage.push()
                                 echo "Built and pushed image with tag: ${env.DOCKER_IMAGE}"
                             }
