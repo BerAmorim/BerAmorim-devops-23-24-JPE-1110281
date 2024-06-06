@@ -53,7 +53,6 @@ pipeline {
         stage('Publish Image') {
             environment {
                 DOCKER_CONFIG = "$HOME/.docker"
-                PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
             }
             steps {
                 echo 'Building and pushing Docker image...'
@@ -62,11 +61,10 @@ pipeline {
                         // Verify if Docker Pipeline is available
                         if (isDockerAvailable()) {
                             def appImage = docker.build("${env.DOCKER_IMAGE}")
-                            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                                sh "${env.DOCKER_PATH} login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                                appImage.push()
-                                echo "Built and pushed image with tag: ${env.DOCKER_IMAGE}"
-                            }
+                            sh "${env.DOCKER_PATH} login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                            sh "${env.DOCKER_PATH} tag ${env.DOCKER_IMAGE} ${env.DOCKER_IMAGE}"
+                            sh "${env.DOCKER_PATH} push ${env.DOCKER_IMAGE}"
+                            echo "Built and pushed image with tag: ${env.DOCKER_IMAGE}"
                         } else {
                             error "Docker is not available. Please ensure Docker is installed and the Docker Pipeline plugin is enabled."
                         }
