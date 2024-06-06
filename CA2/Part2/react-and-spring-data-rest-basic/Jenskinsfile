@@ -33,6 +33,22 @@ pipeline {
                     sh './gradlew javadoc'
                     javadoc javadocDir: 'CA5/Part2/build/javadoc', keepAll: false
                 }
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'build/docs/javadoc',
+                    reportFiles: 'index.html',
+                    reportName: 'Javadoc'
+                ])
+            }
+        }
+        stage('Archive') {
+            steps {
+                echo 'Archiving...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                }
             }
         }
     }
