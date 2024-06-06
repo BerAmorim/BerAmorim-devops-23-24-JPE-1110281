@@ -56,8 +56,10 @@ pipeline {
                     script {
                         // Verifique se o Docker Pipeline está disponível
                         if (isDockerAvailable()) {
-                            def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
-                            appImage.push()
+                             def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
+                                                        docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                                                            appImage.push()
+                                                        }
                         } else {
                             error "Docker is not available. Please ensure Docker is installed and the Docker Pipeline plugin is enabled."
                         }
