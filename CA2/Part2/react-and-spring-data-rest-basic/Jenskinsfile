@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out the code from the repository'
+                git branch: 'main', url: 'https://github.com/BerAmorim/BerAmorim-devops-23-24-JPE-1110281.git'
+            }
+        }
+        stage('Assemble') {
+            steps {
+                echo 'Assembling...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew clean assemble'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    sh './gradlew test'
+                    junit 'build/test-results/test/*.xml'
+                }
+            }
+        }
+        stage('Javadoc') {
+            steps {
+                echo 'Generating Javadoc...'
+                dir('CA2/Part2/react-and-spring-data-rest-basic') {
+                    sh './gradlew javadoc'
+                    javadoc javadocDir: 'CA5/Part2/build/javadoc', keepAll: false
+                }
+            }
+        }
+    }
+}
