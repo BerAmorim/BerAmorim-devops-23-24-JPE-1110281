@@ -49,12 +49,26 @@ pipeline {
                 echo 'Building and pushing Docker image...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
                     script {
-                        // Building the Docker image with a tag that includes the build number
-                        def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
-                        appImage.push()
+                        // Verifique se o Docker Pipeline está disponível
+                        if (isDockerAvailable()) {
+                            def appImage = docker.build("beramorim/ca5_part2-image:${env.BUILD_NUMBER}")
+                            appImage.push()
+                        } else {
+                            error "Docker is not available. Please ensure Docker is installed and the Docker Pipeline plugin is enabled."
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+// Função auxiliar para verificar se o Docker está disponível
+boolean isDockerAvailable() {
+    try {
+        sh 'docker --version'
+        return true
+    } catch (Exception e) {
+        return false
     }
 }
