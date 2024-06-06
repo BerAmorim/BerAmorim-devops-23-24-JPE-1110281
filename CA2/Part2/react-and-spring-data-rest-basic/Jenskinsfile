@@ -31,7 +31,7 @@ pipeline {
                 echo 'Generating Javadoc...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
                     sh './gradlew javadoc'
-                    javadoc javadocDir: 'CA5/Part2/build/javadoc', keepAll: false
+                    javadoc javadocDir: 'CA2/Part2/build/javadoc', keepAll: false
                 }
                 publishHTML(target: [
                     allowMissing: false,
