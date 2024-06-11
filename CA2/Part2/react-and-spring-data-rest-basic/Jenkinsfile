@@ -50,6 +50,14 @@ pipeline {
                 }
             }
         }
+        def isDockerAvailable() {
+                try {
+                    sh "${env.DOCKER_PATH} --version"
+                    return true
+                } catch (Exception e) {
+                    return false
+                }
+        }
         stage('Publish Image') {
             steps {
                 echo 'Building and pushing Docker image...'
@@ -69,15 +77,5 @@ pipeline {
                 }
             }
         }
-    }
-}
-
-// Auxiliary function to check if Docker is available
-boolean isDockerAvailable() {
-    try {
-        sh "${env.DOCKER_PATH} --version"
-        return true
-    } catch (Exception e) {
-        return false
     }
 }
