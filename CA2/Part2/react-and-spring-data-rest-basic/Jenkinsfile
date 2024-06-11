@@ -1,19 +1,9 @@
-def isDockerAvailable() {
-    try {
-        sh "${env.DOCKER_PATH} --version"
-        return true
-    } catch (Exception e) {
-        return false
-    }
-}
-
 pipeline {
     agent any
 
     environment {
         DOCKER_PATH = '/usr/local/bin/docker'
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
-        DOCKER_IMAGE = "beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -72,7 +62,6 @@ pipeline {
                 echo 'Building and pushing Docker image...'
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
                     script {
-                        // Verify if Docker Pipeline is available
                         if (isDockerAvailable()) {
                             def appImage = docker.build("${env.DOCKER_IMAGE}")
                             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
@@ -86,5 +75,14 @@ pipeline {
                 }
             }
         }
+    }
+}
+
+def isDockerAvailable() {
+    try {
+        sh "${env.DOCKER_PATH} --version"
+        return true
+    } catch (Exception e) {
+        return false
     }
 }
