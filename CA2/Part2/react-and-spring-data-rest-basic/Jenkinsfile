@@ -11,12 +11,20 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_PATH = '/usr/local/bin/docker' // Ensure this is correct
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:${env.PATH}"
+        DOCKER_PATH = '/usr/local/bin/docker'
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
         DOCKER_IMAGE = "beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
     }
 
     stages {
+        stage('Check Environment Variables') {
+            steps {
+                sh 'echo "PATH: $PATH"'
+                sh 'echo "DOCKER_PATH: $DOCKER_PATH"'
+                sh '$DOCKER_PATH --version'
+                sh 'docker --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 echo 'Checking out the code from the repository'
