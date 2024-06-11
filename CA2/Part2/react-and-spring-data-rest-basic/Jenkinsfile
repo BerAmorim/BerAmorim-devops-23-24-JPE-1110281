@@ -6,7 +6,7 @@ pipeline {
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
         DOCKER_IMAGE = "beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
     }
-    def isDockerAvailable() {
+    boolean isDockerAvailable() {
                     try {
                         sh "${env.DOCKER_PATH} --version"
                         return true
