@@ -1,3 +1,12 @@
+def isDockerAvailable() {
+    try {
+        sh "${env.DOCKER_PATH} --version"
+        return true
+    } catch (Exception e) {
+        return false
+    }
+}
+
 pipeline {
     agent any
 
@@ -5,14 +14,6 @@ pipeline {
         DOCKER_PATH = '/usr/local/bin/docker'
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin"
         DOCKER_IMAGE = "beramorim/ca5_part2-image:${env.BUILD_NUMBER}"
-    }
-    boolean isDockerAvailable() {
-                    try {
-                        sh "${env.DOCKER_PATH} --version"
-                        return true
-                    } catch (Exception e) {
-                        return false
-                    }
     }
 
     stages {
