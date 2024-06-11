@@ -56,7 +56,7 @@ pipeline {
                 dir('CA2/Part2/react-and-spring-data-rest-basic') {
                     script {
                         def appImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_NUMBER}", ".")
-                        docker.withRegistry('https://registry.hub.docker.com', 'beramorim') {
+                        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                             appImage.push()
                             echo "Built and pushed image with tag: ${env.DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                         }
