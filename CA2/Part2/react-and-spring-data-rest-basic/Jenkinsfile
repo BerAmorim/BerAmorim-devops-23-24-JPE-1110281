@@ -1,8 +1,12 @@
 pipeline {
     agent any
+    tools {
+        dockerTool 'docker'
+    }
     environment {
         DOCKER_IMAGE = "beramorim/ca5_part2-image"
     }
+    stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out the code from the repository'
